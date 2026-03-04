@@ -25,7 +25,7 @@ def generate_launch_description():
         Node(
             package='p3_triangle',
             executable='tf_triangle_node',
-            name='triangle_mover',
+            name='tf_triangle_mover',
             parameters=[
                 {'turn2_angle': turn2_angle},
                 {'side_travel': side_travel}
