@@ -23,8 +23,8 @@ class TFTriangleMover(Node):
         self.declare_parameter('side_travel', 1)
 
         # Obtener valores
-        self.turn2_angle = self.get_parameter('turn2_angle').value
-        self.side_travel = self.get_parameter('side_travel').value
+        self.turn2_angle = float(self.get_parameter('turn2_angle').value)
+        self.side_travel = float(self.get_parameter('side_travel').value)
 
         self.travel = 0
 
