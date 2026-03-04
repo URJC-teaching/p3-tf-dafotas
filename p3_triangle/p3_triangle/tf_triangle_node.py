@@ -14,9 +14,9 @@ from tf_transformations import (
     euler_from_matrix
 )
 
-class TFSquareMover(Node):
+class TFTriangleMover(Node):
     def __init__(self):
-        super().__init__('tf_square_mover')
+        super().__init__('tf_triangle_mover')
 
         self.publisher = self.create_publisher(Twist, '/cmd_vel', 10)
 
@@ -174,7 +174,7 @@ class TFSquareMover(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = TFSquareMover()
+    node = TFTriangleMover()
     
     try:
         rclpy.spin(node)
