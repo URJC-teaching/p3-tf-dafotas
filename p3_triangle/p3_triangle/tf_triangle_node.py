@@ -20,13 +20,13 @@ class TFTriangleMover(Node):
 
         # Declaración de parámetros
         self.declare_parameter('turn2_angle', 3 * math.pi / 4)
-        self.declare_parameter('side_travel', 1)
+        self.declare_parameter('side_travel', 1.0)
 
         # Obtener valores
         self.turn2_angle = float(self.get_parameter('turn2_angle').value)
         self.side_travel = float(self.get_parameter('side_travel').value)
 
-        self.travel = 0
+        self.travel = 0.0
 
         self.publisher = self.create_publisher(Twist, '/cmd_vel', 10)
 
@@ -106,7 +106,7 @@ class TFTriangleMover(Node):
             if self.side_count == 0:
                 self.travel = self.side_travel
             else:
-                self.travel = math.sqrt(2*(self.side_travel)**2)
+                self.travel = self.side_travel * math.sqrt(2)
 
             if distance < self.travel:  # mover distancia de cateto o hipotenusa
                 twist = Twist()
