@@ -18,14 +18,22 @@ class TFTriangleMover(Node):
     def __init__(self):
         super().__init__('tf_triangle_mover')
 
+        # Declaración de parámetros
+        self.declare_parameter('turn2_angle', 3 * math.pi / 4)
+        self.declare_parameter('side_travel', 1)
+
+        # Obtener valores
+        self.turn2_angle = self.get_parameter('turn2_angle').value
+        self.side_travel = self.get_parameter('side_travel').value
+
+        self.travel = 0
+
         self.publisher = self.create_publisher(Twist, '/cmd_vel', 10)
 
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
         self.timer = self.create_timer(0.01, self.control_loop)
-
-        self.travel = 0
 
         self.state = 'init'
         self.bfref2odom = None  # Guardamos odom2bfref (base_footprint referencia a odom)
@@ -96,9 +104,9 @@ class TFTriangleMover(Node):
             # self.get_logger().info(f"Distance: {distance:.2f}")
             
             if self.side_count == 0:
-                self.travel = 1
+                self.travel = self.side_travel
             else:
-                self.travel = math.sqrt(2)
+                self.travel = math.sqrt(2*(self.side_travel)**2)
 
             if distance < self.travel:  # mover distancia de cateto o hipotenusa
                 twist = Twist()
@@ -153,8 +161,8 @@ class TFTriangleMover(Node):
             # Logueo
             # self.get_logger().info(f"Turning angle: {math.degrees(yaw):.2f} deg")
 
-            # Giramos 90 grados (pi/2)
-            if abs(yaw) < 3 * math.pi / 4:
+            # Giramos el segundo valor angular
+            if abs(yaw) < self.turn2_angle:
                 twist = Twist()
                 twist.angular.z = 0.5 # Velocidad un poco más baja para precisión
                 self.publisher.publish(twist)
